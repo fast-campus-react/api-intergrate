@@ -27,19 +27,6 @@ export const initialAsyncState = {
   error: null,
 };
 
-const initialState = {
-  users: {
-    loading: false,
-    data: null,
-    error: null,
-  },
-  user: {
-    loading: false,
-    data: null,
-    error: null,
-  },
-};
-
 const loadingState = {
   loading: true,
   data: null,
