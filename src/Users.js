@@ -1,30 +1,33 @@
 import React, { useState, useEffect, useReducer } from "react";
 import axios from "axios";
-
-function reducer(state, action) {
-  switch (action.type) {
-    case "LOADING":
-    case "SUCCESS":
-    case "ERROR":
-    default:
-      return state;
-  }
-}
+import { asyncReducer } from "./asyncReducer";
 
 function Users() {
+  const [state, dispatch] = useReducer(asyncReducer, {
+    loading: false,
+    data: null,
+    error: null,
+  });
+
   const fetchUses = async () => {
+    dispatch({type:'LOADING'});
     try {
       const res = await axios.get(
         "https://jsonplaceholder.typicode.com/users/"
       );
-    } catch (e) {}
+      dispatch({type:'SUCCESS',data:res.data});
+    } catch (e) {
+      dispatch({type:'ERROR',error:e});
+    }
 
-    setLoading(false);
+    
   };
 
   useEffect(() => {
     fetchUses();
   }, []);
+
+  const { loading, data: users, error } = state;
 
   if (loading) return <div>로딩중 </div>;
   if (error) return <div>에러가 발생헀습니다. </div>;
